@@ -1,0 +1,23 @@
+{
+    "airtable_api_key": {
+        "display_name": "AirTable API Key",
+        "description": "Please enter your airtable API key.",
+        "type": "text",
+        "required": true,
+        "secure": true
+      },
+      "freshsales_subdomain": {
+        "display_name": "Sub Domain",
+        "description": "Enter the freshsales sub domain",
+        "type": "text",
+        "required": true
+      },
+      "freshsales_api_key": {
+        "display_name": "API Key for FreshSales",
+        "description": "Enter the freshsales api key",
+        "type": "text",
+        "required": true,
+        "secure": true
+      }
+
+}

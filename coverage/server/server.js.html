@@ -1,0 +1,2396 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for server/server.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">server/</a> server.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">93.14% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>285/306</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.93% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>47/56</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.48% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>38/42</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.98% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>278/299</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">235×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">406×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-yes">2352×</span>
+<span class="cline-any cline-yes">2352×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-yes">168×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">376×</span>
+<span class="cline-any cline-yes">370×</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-yes">368×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">124×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">262×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">253×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">329×</span>
+<span class="cline-any cline-yes">329×</span>
+<span class="cline-any cline-yes">313×</span>
+<span class="cline-any cline-yes">313×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">313×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">312×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">312×</span>
+<span class="cline-any cline-yes">262×</span>
+<span class="cline-any cline-yes">262×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">312×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">262×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">253×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">92×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1015×</span>
+<span class="cline-any cline-yes">1015×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1015×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">251×</span>
+<span class="cline-any cline-yes">251×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">79×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">204×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">150×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict'
+const utils = require('./lib/utils');
+const leads = require('./lib/leads');
+&nbsp;
+&nbsp;
+const airTablebaseUrl = 'https://api.airtable.com/v0/appJphW1qeLu7Fqo0';
+const airTablefullUrl = airTablebaseUrl + '/EventLeads'
+const airTableListRecordsUrl = airTablefullUrl + '?maxRecords=50&amp;view=Grid%20view'
+const airTableFilterByFormula = '&amp;filterByFormula=%28%7BEmailAddress%7D%20%3D%20%27'
+const airTable24HrsFilterByFormula = '&amp;filterByFormula%3DCREATED_TIME%3E'
+&nbsp;
+console.log(airTableListRecordsUrl);
+&nbsp;
+const aHeadersPostPutDelete = {
+  'Authorization': 'Bearer &lt;%= iparam.airtable_api_key %&gt;',
+  'Content-Type': 'application/json'
+};
+const aHeadersGetDelete = {
+  'Authorization': 'Bearer &lt;%= iparam.airtable_api_key %&gt;'
+};
+&nbsp;
+function aBuildFilterFormula(email){
+  return airTableFilterByFormula+email+'%27%29'
+}
+&nbsp;
+function aBuild24HrsFilterByFormula(time){
+  return airTable24HrsFilterByFormula+time
+}
+&nbsp;
+function aBuildOptions(url, method, headers, body) {
+  return Object.assign({
+    url: url,
+    method: method,
+    headers: headers
+  }, body ? { body } : null);
+}
+&nbsp;
+function aEmailGetRequestOptions(email) {
+  console.log(airTableListRecordsUrl+airTableFilterByFormula);
+  const airTableEmailFormula = aBuildFilterFormula(email);
+  return aBuildOptions(airTableListRecordsUrl + airTableEmailFormula, 'GET', aHeadersGetDelete, null);
+}
+&nbsp;
+function a24HRSGetRequestOptions(time) {
+  console.log(airTableListRecordsUrl+airTable24HrsFilterByFormula);
+  const airTable24hrsFormula = aBuild24HrsFilterByFormula(time);
+  return aBuildOptions(airTableListRecordsUrl + airTable24hrsFormula, 'GET', aHeadersGetDelete, null);
+}
+function aPutRequestOptions(changes) {
+  return aBuildOptions(airTablefullUrl, 'PUT', aHeadersPostPutDelete, changes);
+}
+function aDeleteRequestOptions(id) {
+  return aBuildOptions(airTablefullUrl+'/'+id, 'DELETE', aHeadersGetDelete);
+}
+function aPostRequestOptions(body) {
+  return aBuildOptions(airTablefullUrl, 'POST', aHeadersPostPutDelete, body);
+}
+&nbsp;
+const fBaseUrl = 'https://&lt;%= iparam.freshsales_subdomain %&gt;.freshsales.io';
+const fSearchContactUrl = fBaseUrl + '/api/search?include=contact&amp;per_page=2&amp;q=';
+const fLeadUrl = fBaseUrl + '/api/leads';
+const fFilterUrl = fBaseUrl + '/api/leads/filters';
+const fLeadListUrl = fBaseUrl + '/api/leads/view/';
+&nbsp;
+&nbsp;
+const fHeaders = {
+  'Authorization': 'Token token=&lt;%= iparam.freshsales_api_key %&gt;',
+  'Content-Type': 'application/json'
+};
+&nbsp;
+function fBuildOptions(url, method, headers, body) {
+  return Object.assign({
+    url: url,
+    method: method,
+    headers: fHeaders
+  }, body ? { body } : null);
+}
+&nbsp;
+function fGetFilterRequestOptions(){
+  return fBuildOptions(fFilterUrl, 'GET', fHeaders, null);
+}
+&nbsp;
+function fGetListLeadsRequestOptions(viewID){
+  return fBuildOptions(fLeadListUrl+viewID, 'GET', fHeaders, null);
+}
+&nbsp;
+function fGetRequestOptions(email) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  return fBuildOptions(searchContactUrl + email, 'GET', fHeaders, null);</span>
+}
+function fPutRequestOptions(id, changes) {
+  console.log('URL of put request is:'+fLeadUrl+'/'+id);
+  return fBuildOptions(fLeadUrl + '/' + id, 'PUT', fHeaders, changes);
+}
+function fDeleteRequestOptions(id) {
+  return fBuildOptions(fLeadUrl + '/' + id, 'DELETE', fHeaders);
+}
+function fPostRequestOptions(body) {
+  return fBuildOptions(fLeadUrl, 'POST', fHeaders, body);
+}
+&nbsp;
+&nbsp;
+&nbsp;
+function createFleadPostData(aTableLead){ 
+&nbsp;
+   return {
+    "lead": {
+      "first_name" : aTableLead['FirstName'],
+      "last_name" : aTableLead['LastName'],
+      "email" : aTableLead['EmailAddress'],
+      "company": {
+        "name": aTableLead['CompanyName']
+      },
+      "work_number": aTableLead['ContactNumber']
+    }
+  }
+&nbsp;
+}
+&nbsp;
+function createAtableLeadPostData(freshSalesLead){
+&nbsp;
+  return {
+      "records": [
+        {
+          "fields": {
+            "FirstName": freshSalesLead.first_name,
+            "LastName": freshSalesLead.last_name,
+            "CompanyName": freshSalesLead.company.name,
+            "EmailAddress": freshSalesLead.email,
+            "ContactNumber": freshSalesLead.mobile_number
+          }
+        }
+      ]
+    };
+}
+&nbsp;
+function updateAtableLeadPostData(freshSalesLead,id){
+&nbsp;
+  return {
+      "records": [
+        {
+          "id": id,
+          "fields": {
+            "FirstName": freshSalesLead.first_name,
+            "LastName": freshSalesLead.last_name,
+            "CompanyName": freshSalesLead.company.name,
+            "EmailAddress": freshSalesLead.email,
+            "ContactNumber": freshSalesLead.mobile_number
+          }
+        }
+      ]
+    };
+}
+&nbsp;
+async function retrieveaTableIdifPresent(email){
+&nbsp;
+  try{
+&nbsp;
+    const airtableData = await utils.makeGetRequest(aEmailGetRequestOptions(email));
+    const airtableResponse = airtableData.response;
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof airtableData.response === 'string') {
+      airTableJson = JSON.parse(airtableResponse);
+      console.log(airTableJson);
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!airtableResponse.length) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('lead not found');</span>
+    }
+&nbsp;
+   if(airTableJson.records[0]==null)
+   {
+     return undefined;
+   }
+&nbsp;
+    const airTableRecordId = airTableJson.records[0].id;
+    console.log(airTableRecordId);
+&nbsp;
+    return airTableRecordId;
+&nbsp;
+  }catch (error){
+<span class="cstat-no" title="statement not covered" >    console.log('Error while UPDATING a lead in Airtable');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(error);</span>
+  }
+&nbsp;
+}
+&nbsp;
+async function createaTableRecord(payload)<span class="fstat-no" title="function not covered" >{</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  try{</span>
+    
+    const freshSalesLead = <span class="cstat-no" title="statement not covered" >createAtableLeadPostData(payload.data.lead); </span>
+    const data = <span class="cstat-no" title="statement not covered" >await utils.makePostRequest(aPostRequestOptions(freshSalesLead));</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Successfully created a record in Airtable'+ data);</span>
+&nbsp;
+  } catch (error){
+<span class="cstat-no" title="statement not covered" >    console.log('Error while creating a lead in Airtable');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(error);</span>
+  }
+}
+&nbsp;
+async function retrieveViewIDFor24HRS(){
+&nbsp;
+  try {
+    const fFilterData = await utils.makeGetRequest(fGetFilterRequestOptions());
+    const fFilterResponse = fFilterData.response;
+&nbsp;
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof fFilterData.response === 'string') {
+      fFilterJson = JSON.parse(fFilterResponse);
+      console.log(fFilterJson);
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!fFilterResponse.length) {
+<span class="cstat-no" title="statement not covered" >      throw new Error('filters not found');</span>
+    }
+&nbsp;
+&nbsp;
+    const filterArray = fFilterJson['filters'];
+    console.log('printing array' + filterArray);
+&nbsp;
+    var viewId;
+&nbsp;
+    filterArray.forEach(function (value) {
+      console.log(value['name']);
+      if (value['name'] == 'New Leads') {
+        viewId = value['id'];
+      }
+    });
+     
+    console.log('viewID for the new leads generated in last 24 hours is:' + viewId);
+    return viewId;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+&nbsp;
+}
+&nbsp;
+async function retrievefLeadsFor24Hrs(viewId,shouldPersist){
+&nbsp;
+try{
+  
+  const fLeadsData = await utils.makeGetRequest(fGetListLeadsRequestOptions(viewId));
+  const fLeadsResponse = fLeadsData.response;
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof fLeadsData.response === 'string') {
+    fLeadsData.response = JSON.parse(fLeadsResponse);
+    console.log(fLeadsData.response);
+  }
+&nbsp;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!fLeadsResponse.length) {
+<span class="cstat-no" title="statement not covered" >    throw new Error('no leads found not found');</span>
+  }
+   
+  const leadArray = fLeadsData.response['leads'];
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if(shouldPersist == true)
+  {
+&nbsp;
+  for(var i = 0; i &lt; leadArray.length; i++) {
+    var obj = leadArray[i];
+    console.log('there you go:'+obj.email);
+    console.log('there you go:'+JSON.stringify(obj));
+&nbsp;
+    var email = obj.email;
+    var emailSansSplC = email.replace(/[^\w\s]/gi, '');
+    console.log('the email without special characters is:'+emailSansSplC);
+&nbsp;
+    
+    await leads.setLead(emailSansSplC,JSON.stringify(obj));
+    const leadinDB =  await leads.getLead(emailSansSplC);
+    console.log('look here - leadinDB is:'+leadinDB);
+    console.log('look here - key is:'+emailSansSplC);
+&nbsp;
+&nbsp;
+  }
+  return leadArray;
+} 
+} catch (error) {
+&nbsp;
+  console.log('error');
+  return;
+}
+&nbsp;
+}
+async function retrieveALeadsFor1Hr(){
+    
+  try{
+  
+    const dateNow = new Date();
+    var ydayDay = new Date(dateNow.getTime() - (1 * 60 * 60 * 1000));
+    const fullDate = (ydayDay.toISOString());
+    console.log(fullDate);
+&nbsp;
+      const airtableData = await utils.makeGetRequest(a24HRSGetRequestOptions(fullDate));
+  
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof airtableData.response === 'string') {
+        airtableData.response = JSON.parse(airtableData.response);
+        console.log(airtableData.response);
+      }
+  
+      const airTableLeadsArray = airtableData.response.records;
+      console.log('The Arrary is'+JSON.stringify(airTableLeadsArray));
+  
+      return airTableLeadsArray;
+  
+    }catch (error){
+<span class="cstat-no" title="statement not covered" >      console.log('Error while UPDATING a lead in Airtable');</span>
+<span class="cstat-no" title="statement not covered" >      console.log(error);</span>
+    }
+  
+  }
+&nbsp;
+&nbsp;
+async function createaTableRecord(payload){
+&nbsp;
+  try{
+    
+    const freshSalesLead = createAtableLeadPostData(payload.data.lead); 
+    const data = await utils.makePostRequest(aPostRequestOptions(freshSalesLead));
+    console.log('Successfully created a record in Airtable'+ data);
+&nbsp;
+  } catch (error){
+<span class="cstat-no" title="statement not covered" >    console.log('Error while creating a lead in Airtable');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(error);</span>
+  }
+&nbsp;
+}
+&nbsp;
+function isUpdateRequired(freshsalesLead,airtableLead)
+{
+&nbsp;
+ if( freshsalesLead['first_name'] != airtableLead.fields['FirstName'] || 
+  freshsalesLead['last_name'] != airtableLead.fields['LastName'] ||
+  freshsalesLead['email'] != airtableLead.fields['EmailAddress'] ||
+  freshsalesLead['company']['name'] != airtableLead.fields['CompanyName'] ||
+  freshsalesLead['work_number'] != airtableLead.fields['ContactNumber']){
+&nbsp;
+    return true;
+  }
+&nbsp;
+  return false;
+}
+&nbsp;
+async function initiateLeadSyncProcess(payload){
+&nbsp;
+  try{
+  
+    console.log(payload);
+    const viewId =  await retrieveViewIDFor24HRS();
+    console.log('view ID returned is:',viewId);
+  
+    let shouldPersist = true;
+    const freshworksLeads = await retrievefLeadsFor24Hrs(viewId,shouldPersist);
+    const airTableLeads = await retrieveALeadsFor1Hr();
+&nbsp;
+    console.log('retrieved freshworks leads:',JSON.stringify(freshworksLeads));
+    findAirTableFreshworksDelta(freshworksLeads,airTableLeads);
+&nbsp;
+&nbsp;
+&nbsp;
+} catch(error)
+{
+<span class="cstat-no" title="statement not covered" >console.log(error);</span>
+}
+  
+}
+&nbsp;
+async function  findAirTableFreshworksDelta(freshworksLeads,airTableLeads){
+&nbsp;
+  try{
+  var createLeads = [];
+  var updateLeads = [];
+  var deleteLeads = [];
+&nbsp;
+  for(var i = 0; i &lt; airTableLeads.length; i++) {
+&nbsp;
+&nbsp;
+   aTableValue = airTableLeads[i].fields['EmailAddress'];
+   if(aTableValue != null){
+   const emailSansSplC = aTableValue.replace(/[^\w\s]/gi, '');
+   console.log(emailSansSplC);
+&nbsp;
+   var fLeadinDB =  await leads.getLead(emailSansSplC);
+&nbsp;
+   console.log('The lead is'+fLeadinDB);
+&nbsp;
+   if (typeof fLeadinDB === 'string') {
+    fLeadinDB = JSON.parse(fLeadinDB);
+    console.log(fLeadinDB);
+   }
+   
+&nbsp;
+   if(fLeadinDB == null)
+   {
+     createLeads.push(airTableLeads[i]);
+     console.log('Going to create a lead with key:',emailSansSplC);
+   }
+   else if(isUpdateRequired(fLeadinDB,airTableLeads[i]))
+   {
+&nbsp;
+      updateLeads.push(airTableLeads[i]);      
+      console.log('Going to update a lead with key:',emailSansSplC);
+&nbsp;
+   }
+   else{
+     continue;
+   }
+&nbsp;
+   }
+  }
+&nbsp;
+  for(var i = 0; i &lt; freshworksLeads.length; i++) {
+  
+    aRecordEmail = freshworksLeads[i].email;
+    var found = false;
+    for(var j=0; j &lt; airTableLeads.length; j++) {
+&nbsp;
+      aTableEmail = airTableLeads[j].fields['EmailAddress'];
+      console.log('Airtable email is:'+aTableEmail);
+&nbsp;
+&nbsp;
+      if(aRecordEmail == aTableEmail)
+      {
+          found = true;
+          console.log('found match in freshsales');
+      }
+    }
+&nbsp;
+    if(found == false)
+      {
+        console.log('didnt find match in freshsales');
+        const freshSaleEmailSanSplc = aRecordEmail.replace(/[^\w\s]/gi, '');
+        deleteLeads.push(freshworksLeads[i]);
+        console.log('Going to delete a lead with key:',freshSaleEmailSanSplc);
+      }
+&nbsp;
+  }
+ 
+&nbsp;
+  console.log('Created Leads are:'+createLeads);
+  console.log('Updated Leads are:'+updateLeads);
+  console.log('Deleted Leads are:'+deleteLeads);
+&nbsp;
+  await syncLeads(createLeads,updateLeads,deleteLeads);
+&nbsp;
+ }
+ catch (error){
+&nbsp;
+     console.log(error);
+    
+ }
+&nbsp;
+}
+&nbsp;
+async function syncLeads(createLeads,updateLeads,deleteLeads){
+&nbsp;
+  try{
+     
+  // Delta sync for newly created leads in airtable.   
+  for(var i=0;i&lt;createLeads.length; i++)
+  {
+    const aTableLead = createLeads[i];
+    console.log(createFleadPostData(aTableLead.fields));
+    await utils.makePostRequest(fPostRequestOptions(createFleadPostData(aTableLead.fields)));
+    console.log('Successfully created leads while syncing with Airtable');
+&nbsp;
+  }
+&nbsp;
+    // Delta sync for newly updated leads in airtable.   
+    for(var i=0;i&lt;updateLeads.length; i++)
+    {
+      const aTableUpdateLead = updateLeads[i];
+      console.log(aTableUpdateLead);
+&nbsp;
+      var email = aTableUpdateLead.fields['EmailAddress'];
+      var emailSansSplC = email.replace(/[^\w\s]/gi, '');
+      var leadinDB =  await leads.getLead(emailSansSplC);
+      
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof leadinDB === 'string') {
+        leadinDB = JSON.parse(leadinDB);
+        console.log(leadinDB);
+       }
+&nbsp;
+      console.log(leadinDB.id);
+      console.log(createFleadPostData(aTableUpdateLead.fields));
+      const putData = createFleadPostData(aTableUpdateLead.fields);
+      console.log(putData);
+      await utils.makePutRequest(fPutRequestOptions(leadinDB.id,putData));
+       console.log('Successfully updated leads while syncing with Airtable');
+    }
+&nbsp;
+    for(var i=0;i&lt;deleteLeads.length; i++)
+    {
+      const fLead = deleteLeads[i];
+      await utils.makeDeleteRequest(fDeleteRequestOptions(fLead.id));
+      console.log('Successfully deleted leads while syncing with Airtable');
+      fLeadValue = fLead.email;
+      const emailSansSplC = fLeadValue.replace(/[^\w\s]/gi, '');
+      await leads.deleteLead(emailSansSplC);
+    }
+&nbsp;
+&nbsp;
+  if(createLeads.length != 0 || updateLeads.length !=0 || deleteLeads.length != 0)
+  {
+    const source = 'AIRTABLE';
+    const dateNow = new Date();
+    const createdLeadsNo = createLeads.length.toString();
+    const updatedLeadsNo = updateLeads.length.toString();
+    const deletedLeadNo = deleteLeads.length.toString();
+&nbsp;
+    await addReportRecordtoDB(source,dateNow.toISOString(),createdLeadsNo,updatedLeadsNo,deletedLeadNo);
+&nbsp;
+  }
+&nbsp;
+  }catch (error)
+  {
+    console.error(error);  
+   
+  }
+&nbsp;
+}
+&nbsp;
+async function addReportRecordtoDB(source,date,createdLeadsNo,updatedLeadsNo,deletedLeadNo){
+&nbsp;
+  const value = {
+    "reports": [
+      {
+        "source": source,
+        "date": date,
+        "createdRecords": createdLeadsNo,
+        "updatedRecords": updatedLeadsNo,
+        "deletedRecords": deletedLeadNo
+        
+      }
+    ]
+  };
+&nbsp;
+  const key = 'reportRecord';
+&nbsp;
+  //await $db.update(key, 'append',  {"report": [reportData]});
+  await $db.update(key, 'append',  value);
+  const reportJSON = await $db.get(key);
+&nbsp;
+  console.log(reportJSON);
+  //await $db.delete(key);
+&nbsp;
+}
+&nbsp;
+&nbsp;
+exports = {
+  events: [
+    { event: 'onLeadCreate', callback: 'onLeadCreateHandler' },
+    { event: 'onLeadUpdate', callback: 'onLeadUpdateHandler' },
+    { event: 'onLeadDelete', callback: 'onLeadDeleteHandler' },
+    { event: 'onAppInstall', callback: 'onAppInstallHandler'},
+    { event: 'onAppUninstall', callback: 'onAppUnInstallHandler'},
+    { event: "onScheduledEvent", callback: 'onScheduledEventHandler'}
+  ],
+&nbsp;
+  onLeadUpdateHandler: async function (payload) {
+    
+    try{
+&nbsp;
+      const aTableLeadEmail = payload.data.lead.email;
+      const airTableRecordID = await retrieveaTableIdifPresent(aTableLeadEmail);
+      console.log('AirTable Record ID:'+airTableRecordID);
+&nbsp;
+      if(airTableRecordID == null)
+      {
+        console.log('The user with this email is not available hence creating a new one');
+         await createaTableRecord(payload);
+         return;
+      }
+&nbsp;
+      const upDatedfreshSalesLead = updateAtableLeadPostData(payload.data.lead,airTableRecordID); 
+      console.log(upDatedfreshSalesLead);
+&nbsp;
+      const data = await utils.makePutRequest(aPutRequestOptions(upDatedfreshSalesLead));
+      console.log('Successfully updated a record in Airtable'+ data);
+&nbsp;
+      const source = 'FRESHSALES';
+      const dateNow = new Date();
+      const createdLeadsNo = 0;
+      const updatedLeadsNo = 1;
+      const deletedLeadNo = 0;
+  
+      await addReportRecordtoDB(source,dateNow.toISOString(),createdLeadsNo,updatedLeadsNo,deletedLeadNo);
+  
+&nbsp;
+    }catch (error){
+<span class="cstat-no" title="statement not covered" >      console.log('Error while UPDATING a lead in Airtable');</span>
+      console.log(error);
+    }
+  
+  },
+&nbsp;
+  onLeadCreateHandler: async function (payload) {
+    
+    try{
+      const aTableLeadEmail = payload.data.lead.email;
+      const airTableRecordID = await retrieveaTableIdifPresent(aTableLeadEmail);
+      console.log('AirTable Record ID: '+airTableRecordID);
+&nbsp;
+      if(airTableRecordID == null)
+      {
+        createaTableRecord(payload);
+        const source = 'FRESHSALES';
+        const dateNow = new Date();
+        const createdLeadsNo = 1;
+        const updatedLeadsNo = 0;
+        const deletedLeadNo = 0;
+  
+      await addReportRecordtoDB(source,dateNow.toISOString(),createdLeadsNo,updatedLeadsNo,deletedLeadNo);
+        return;
+      }
+      else {
+        console.log('The user with this email is already existing in airtable hence updating the existing one');
+        const upDatedfreshSalesLead = updateAtableLeadPostData(payload.data.lead,airTableRecordID); 
+        console.log(upDatedfreshSalesLead);
+  
+  
+        const data = await utils.makePutRequest(aPutRequestOptions(upDatedfreshSalesLead));
+        console.log('Successfully updated a record in Airtable'+ data);     
+        return;  
+      }
+&nbsp;
+    }catch (error){
+<span class="cstat-no" title="statement not covered" >      console.log('Error while UPDATING a lead in Airtable');</span>
+      console.log(error);
+    }
+&nbsp;
+  },
+&nbsp;
+&nbsp;
+  onLeadDeleteHandler: async function (payload) {
+  
+    try{
+&nbsp;
+    
+      const aTableLeadEmail = payload.data.lead.email;
+      const airTableRecordID = await retrieveaTableIdifPresent(aTableLeadEmail);
+      console.log('AirTable Record ID: '+airTableRecordID);
+&nbsp;
+      if(airTableRecordID == null)
+      {
+        console.log('Record not available in Air table');
+         return;
+      }
+&nbsp;
+      const data = await utils.makeDeleteRequest(aDeleteRequestOptions(airTableRecordID));
+      const emailSansSplC = aTableLeadEmail.replace(/[^\w\s]/gi, '');
+      await leads.deleteLead(emailSansSplC);
+      console.log('Successfully deleted a record in Airtable'+ data);
+      const source = 'FRESHSALES';
+      const dateNow = new Date();
+      const createdLeadsNo = 0;
+      const updatedLeadsNo = 0;
+      const deletedLeadNo = 1;
+  
+      await addReportRecordtoDB(source,dateNow.toISOString(),createdLeadsNo,updatedLeadsNo,deletedLeadNo);
+    }catch (error){
+<span class="cstat-no" title="statement not covered" >      console.log('Error while DELETING a lead in Airtable');</span>
+      console.log(error);
+    }
+  
+  },
+&nbsp;
+  onAppUnInstallHandler: function(payload)
+  {
+  
+    console.log(payload);
+    $db.delete('reportRecord')
+    .then(
+      function(data) {
+        console.log('Success', data);
+      }, 
+      function() <span class="fstat-no" title="function not covered" >{</span>
+        console.log('error');
+      }
+    );
+&nbsp;
+    $schedule.delete({
+      name: "leadSyncSchedule100"
+    })
+    .then(function(data) {
+        console.log('successfully deleted the existing schedule'+data)
+        renderData();
+    }, function(err) <span class="fstat-no" title="function not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >         console.log('failed to retrieve the existing schedule'+err)</span>
+         renderData();
+&nbsp;
+   });
+&nbsp;
+  },
+&nbsp;
+  onAppInstallHandler: function(payload) {
+&nbsp;
+    console.log(payload);
+    
+    //generate a web hook and add it to pipedream.
+    
+    // generateTargetUrl()
+    // .then(function(url) {
+    //   //Include API call to the third party to register your webhook
+    //   console.log(url);
+    //     connecttoPipedream(url);
+    // })
+    // .fail(function(err) {
+    //   // Handle error
+    // })
+&nbsp;
+    // Create a recurring schedule
+    const dateNow = new Date();
+    const fullDate = (dateNow.toISOString());
+&nbsp;
+    const datePieces = fullDate.split('T');
+    const dateOnly   =  datePieces.shift();
+    console.log(dateOnly);
+&nbsp;
+  //  // retrieve the old one
+  //   const lSchedule = $schedule.fetch({
+  //      name: "leadSyncSchedule100"
+  //    })
+  //    .then(function(data) {
+  //        console.log('successfully retrieved the existing schedule'+data)
+  //    }, function(err) {
+  //         console.log('failed to retrieve the existing schedule'+err)
+  //   });
+    
+  //   //delete it if retrieved
+  //    if(lSchedule)
+  //    {  
+  //      $schedule.delete({
+  //        name: "leadSyncSchedule100"
+  //      })
+  //        .then(function (data) {
+  //          console.log('successfully deleted the existing schedule'+data)
+  //        }, function (err) {
+  //          //"err" is a json with status and message.
+  //          console.log('failed to delete'+err)
+  //        });
+&nbsp;
+  //   }
+     
+     //create a brand new scheduler.
+     $schedule.create({
+      name: "leadSyncSchedule100",
+      data: {task_id: 10001},
+      schedule_at: dateOnly,
+      repeat: {
+        time_unit: "minutes",
+        frequency: 1
+      }
+    })
+    .then(function(data) {
+        //"data" is a json with status and message.
+        console.log('successfully created'+JSON.stringify(data))
+        renderData();
+    }, function(err) {
+        //"err" is a json with status and message.
+        console.log('failure'+JSON.stringify(err))
+        renderData();
+    });
+&nbsp;
+&nbsp;
+  },
+&nbsp;
+  
+onScheduledEventHandler: async function (payload) {
+    
+  console.log("Inside onscheduled event handler");
+&nbsp;
+  await initiateLeadSyncProcess(payload);
+&nbsp;
+}
+&nbsp;
+};</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Mar 13 2020 21:26:57 GMT+0530 (India Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
